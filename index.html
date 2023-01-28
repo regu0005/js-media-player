@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta http-equiv="Content-Security-Policy"
+            content="
+                default-src 'self';
+                connect-src 'self';
+                font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+                frame-src 'self';
+                img-src 'self';
+                object-src 'none';
+                script-src 'self' 'unsafe-inline';
+                style-src 'self' 'unsafe-inline';
+                style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;
+            ">
+
+    <title>Hybrid 1 Assignment</title>
+    
+    <link rel="stylesheet" href="./js/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+      <header class="masthead">
+        <div class="container">
+          <h1 class="logo__text">GPlayer Media >></h1>
+        </div>
+      </header>
+      <main>
+        <div class="container">
+          <div class="media__wrap">
+
+            <div class="album_art__full">
+              <img class="song__img_main" src="./images/album_guns_01.png" alt="Guns n Roses" />
+              <button class="btnShuffle fa fa-random" id="btnShuffle" title="shuffle">
+                <i class="material-symbols-rounded">shuffle</i>
+              </button>
+            </div>
+
+            <ul class="playlist">
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/billy_preston__my_sweet_lord__02.jpg" alt="Billy Preston - My Sweet Lord" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">My Sweet Lord</p>
+                    <p class="track__artist">Billy Preston</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">05:04</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/bon_jovi__livin_on_a_prayer__02.jpg" alt="Bon Jovi - Livin on a prayer" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Livin on a prayer</p>
+                    <p class="track__artist">Bon Jovi</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">04:50</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/deep_purple__smoke_on_the_water__02.jpg" alt="Deep_Purple - Smoke on the Water" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Smoke on the Water</p>
+                    <p class="track__artist">Deep_Purple</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">05:42</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/guns_n_roses__sweet_child_o_mine__02.jpg" alt="Guns n Roses - Sweet Child o Mine" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Sweet Child o Mine</p>
+                    <p class="track__artist">Guns n Roses</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">05:03</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/kiss__i_was_made_for_lovi__02.jpg" alt="Kiss - I Was Made for Lovi" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">I Was Made for Lovi</p>
+                    <p class="track__artist">Kiss</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">03:58</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/michael_jackson__beat_it__02.jpg" alt="Michael Jackson - Beat it" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Beat it</p>
+                    <p class="track__artist">Michael Jackson</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">04:18</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/queen__crazy_little_thing_called_love__02.jpg" alt="Queen - Crazy Little thing Called Love" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Crazy Little thing Called Love</p>
+                    <p class="track__artist">Queen</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">02:55</time>
+                  </div>
+                </div>
+              </li>
+
+              <li class="box track__item">
+                <div class="track__thumb">
+                  <img class="song__img" src="./images/queen__do__02.jpg" alt="Queen - Do" />
+                </div>
+                <div class="track__info">
+                  <div class="track__details">
+                    <p class="track__title">Do</p>
+                    <p class="track__artist">Queen</p>
+                  </div>
+                  <div class="track__time">
+                    <time datetime="">02:55</time>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+
+          </div>
+        </div>
+      </main>
+      <section class="progress">
+        <div class="container">
+          <div class="played">
+            <input type="range" min="0" max="100" value="100" oninput="rangeValue.innerText = this.value">
+            <p id="rangeValue">100</p>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <div class="container">
+          <div class="controls__wrap">
+            <div class="controls">
+              <button id="btnPrev" class="btnPrev fa fa-backward" title="previous track"><i class="material-symbols-rounded"></i></button>
+              <button id="btnPlay" class="btnPlay fa fa-play" title="play | pause"><i class="material-symbols-rounded"></i></button>
+              <button id="btnNext" class="btnNext fa fa-forward " title="next track"><i class="material-symbols-rounded"></i></button>
+            </div>
+            <div class="times">
+              <time datetime="" class="current-time">00:00</time> &nbsp;|&nbsp;
+              <time datetime="" class="total-time">00:00</time>
+            </div>
+          </div>
+        </div>
+      </footer>
+<script src="./js/main.js"></script>
+</script>
+</body>
+</html>
