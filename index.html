@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta http-equiv="Content-Security-Policy"
+    <!-- <meta http-equiv="Content-Security-Policy"
             content="
                 default-src 'self';
                 connect-src 'self';
@@ -13,16 +13,21 @@
                 img-src 'self';
                 script-src 'self' 'unsafe-inline';
                 style-src 'self' 'unsafe-inline';
-            ">
+            "> -->
 
-    <title>Hybrid 1 Assignment</title>
+    <title>Hybrid 3 Assignment</title>
     
-    <link rel="stylesheet" href="./js/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="shortcut icon" href="./images/favicon.ico">
     <link rel="stylesheet" href="./css/main.css">
 
     <script src="./js/utils.js" type="module"></script>
     <script src="./js/app.js" type="module"></script>
+
+    <style>
+      
+      </style>
+
 </head>
 <body>
       <header class="masthead">
@@ -60,10 +65,10 @@
         <div class="container">
           <div class="controls__wrap">
             <div class="controls">
-              <button id="btnPrev" class="btnPrev fa fa-backward" title="previous track"><i class="material-symbols-rounded"></i></button>
-              <button id="btnPlay" class="btnPlay fa fa-play" title="Play"><i class="material-symbols-rounded"></i></button>
-              <button id="btnPause" class="btnPause fa fa-pause" title="Pause"><i class="material-symbols-rounded"></i></button>
-              <button id="btnNext" class="btnNext fa fa-forward " title="next track"><i class="material-symbols-rounded"></i></button>
+              <button id="btnPrev" class="btnPrev material-symbols-outlined" title="previous track">navigate_before</button>
+              <button id="btnPlay" class="btnPlay material-symbols-outlined" title="Play">play_arrow</button>
+              <button id="btnPause" class="btnPause material-symbols-outlined" title="Pause">pause</button>
+              <button id="btnNext" class="btnNext material-symbols-outlined" title="Next track">navigate_next</button>
             </div>
             <div class="times">
               <time datetime="" class="current-time">00:00</time> &nbsp;|&nbsp;

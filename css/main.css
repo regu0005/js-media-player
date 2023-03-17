@@ -576,3 +576,12 @@
         top: .25rem;
         box-shadow: 0 0 0 var(--color-shadow-1);
       }
+
+      /* --- BUTTON ICONS --- */
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+      }

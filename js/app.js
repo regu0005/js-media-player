@@ -12,8 +12,20 @@ const APP = {
   iconPause: '',
   flagFirstAudio: 0,
   init: () => {
-    //called when DOMContentLoaded is triggered
+    // Called when DOMContentLoaded is triggered
 
+    // Init Playlist
+    APP.initPlaylist();
+
+    // Default - Hide pause icon
+    APP.iconPlay = document.getElementById('btnPlay');
+    APP.iconPause = document.getElementById('btnPause');
+    APP.iconPause.style.display = 'none';
+
+    // Init listeners
+    APP.addListeners();
+  },
+  initPlaylist(){
     let playerContainer = document.getElementById('playlist');
     let playlist = MEDIA.map( (obj) => {
         let title = obj.title;
@@ -23,8 +35,6 @@ const APP = {
         let imgSmall = obj.image_small;
 
         let audioItem = document.createElement('li');
-        // audioItem.href = APP.routeMP3 + obj.mp3;
-        // audioItem.target = '_blank';
         audioItem.classList.add('box');
         audioItem.classList.add('track__item');
         audioItem.innerHTML = `
@@ -49,16 +59,7 @@ const APP = {
         // APP.setupAudio(`${APP.routeMP3}${songFile}`);
         playerContainer.appendChild(audioItem);
     });
-
-    // Default - Hide pause icon
-    APP.iconPlay = document.getElementById('btnPlay');
-    APP.iconPause = document.getElementById('btnPause');
-
-    APP.iconPause.style.display = 'none';
-
-    APP.addListeners();
   },
-  
   addListeners: () => {
     //add event listeners for interface elements
     //add event listeners for APP.audio    
