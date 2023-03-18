@@ -1,4 +1,4 @@
-[
+const MEDIA = [
     {
         "id": 1,
         "image_big": "billy_preston__my_sweet_lord__01.jpg",
@@ -65,3 +65,5 @@
         "artist": "Queen"
     }
 ]
+
+export default MEDIA;
