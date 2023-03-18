@@ -168,23 +168,7 @@ const APP = {
                     console.warn("Error: ", err)
                 }
             });
-            // Display mins and secs of each track onload
-                // let srcAudioBase = song.querySelector('audio').innerHTML;
-                // console.log("srcAudio: ",srcAudioBase);
-
-                // let newAudioBase = new Audio(srcAudioBase);
-                // let sTotalMinsText = song.querySelector('.total__mins');
-
-                // console.log("newAudioBase.duration: ", newAudioBase.duration);
-
-                // let totalMins = Math.floor( newAudioBase.duration / 60 );
-                // let totalSecs = Math.floor( newAudioBase.duration - (totalMins * 60) );
-
-                // if(totalMins < 10) { totalMins = "0"+totalMins; }
-                // if(totalSecs < 10) { totalSecs = "0"+totalSecs; }
-
-                // sTotalMinsText.innerHTML = totalMins + ":" + totalSecs;
-
+            
             // Set the first song as default
                 if(APP.flagFirstAudio==0)
                 {
