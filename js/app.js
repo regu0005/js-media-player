@@ -15,6 +15,7 @@ const APP = {
   iconPause: '',
   iconBack: '',
   iconNext: '',
+  slider: '',
   flagFirstAudio: 0,
   init: () => {
     // --- Called when DOMContentLoaded is triggered:::
@@ -32,6 +33,9 @@ const APP = {
 
     APP.iconBack = document.getElementById('btnPrev');
     APP.iconNext = document.getElementById('btnNext');
+    
+    // Slider
+    APP.slider = document.getElementById('slider');
 
     // Init listeners
     APP.addListeners();
@@ -155,6 +159,10 @@ const APP = {
 
                     });
 
+                    // Update the slider
+                    clearInterval(APP.updateTimer);
+                    APP.updateTimer = setInterval(APP.updateSlider, 1000);
+
                 } 
                 catch(err) {
                     console.warn("Error: ", err)
@@ -208,6 +216,10 @@ const APP = {
                             mCurrentMinsText.innerHTML = APP.convertTimeDisplay(newAudio.currentTime);
 
                         });
+
+                        // Update the slider
+                        clearInterval(APP.updateTimer);
+                        APP.updateTimer = setInterval(APP.updateSlider, 1000);
 
                         // Save the current track ID
                             let srcTrackInfo = song.querySelector('.track__info');
@@ -319,6 +331,17 @@ const APP = {
             APP.playSong(newIndex);
         }
     })
+
+    // Set the listeener for the Slider
+    APP.slider.addEventListener('change', () => {
+        let trackPosition = APP.currentAudio.duration * (APP.slider.value / 100);
+        APP.currentAudio.currentTime = trackPosition;
+    });
+
+  },
+  updateSlider: () => {
+    let trackPosition = APP.currentAudio.currentTime * (100 / APP.currentAudio.duration);
+    APP.slider.value = trackPosition;
   },
   updateImage: (srcImage) => {
     let srcCoverBig = srcImage.replace("02","01");
@@ -333,6 +356,9 @@ const APP = {
   playSong: (index) => {
     //start the track loaded into APP.audio playing
     try {
+
+        // Reset slider
+        APP.slider.value = 0;
 
         // Change main cover
         let srcCover = APP.songList[index].querySelector('.song__img').src;
@@ -402,6 +428,9 @@ const APP = {
 
         });
 
+        // Update the slider
+        clearInterval(APP.updateTimer);
+        APP.updateTimer = setInterval(APP.updateSlider, 1000);
     } 
     catch(err) {
         console.warn("Error: ", err)
