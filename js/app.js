@@ -44,41 +44,39 @@ const APP = {
   initPlaylist(){
     let playerContainer = document.getElementById('playlist');
 
-    let playlist = MEDIA.map( (obj) => {
-
-        let trackID     = obj.id;
-        let title       = obj.title;
-        let artist      = obj.artist;
-        let titleArtist = title + ' - ' + artist;
-        let songFile    = obj.mp3;
-        let imgSmall    = obj.image_small;
-
-        let audioItem = document.createElement('li');
-        audioItem.classList.add('box');
-        audioItem.classList.add('track__item');
-        audioItem.innerHTML = `
+    MEDIA.map( (obj) => {
         
+        let {id, title, artist, mp3, image_small} = obj;
+
+        let titleArtist = title + ' - ' + artist;
+
+        let contentAudio = `
+            <li class="box track__item">
                 <div class="track__thumb">
-                  <img class="song__img" src="${APP.routeImg}${imgSmall}" alt="${titleArtist}" />
+                        <img class="song__img" src="${APP.routeImg}${image_small}" alt="${titleArtist}" />
                 </div>
-                <div class="track__info" data-id=${trackID}>
-                  <div class="track__details">
-                    <p class="track__title">${title}</p>
-                    <p class="track__artist">${artist}</p>
-                  </div>
-                  <div class="track__time">
-                    <time class="total__mins"></time>
-                  </div>
-                  <div class="track__mp3">
-                    <audio>${APP.routeMP3}${songFile}</audio>
-                  </div>
-                </div>        
+                <div class="track__info" data-id=${id}>
+                    <div class="track__details">
+                        <p class="track__title">${title}</p>
+                        <p class="track__artist">${artist}</p>
+                    </div>
+                    <div class="track__time">
+                        <time class="total__mins"></time>
+                    </div>
+                    <div class="track__mp3">
+                        <audio>${APP.routeMP3}${mp3}</audio>
+                    </div>
+                </div> 
+            </li>
         `;
 
-        // Store track ID
-        APP.songIDs.push(trackID);
+        let audioItem = document.createElement('li');
+        audioItem.innerHTML = contentAudio;
 
         playerContainer.appendChild(audioItem);
+
+        // Store track ID
+        APP.songIDs.push(id);
     });
   },
 
