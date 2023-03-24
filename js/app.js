@@ -51,7 +51,7 @@ const APP = {
         let titleArtist = title + ' - ' + artist;
 
         let contentAudio = `
-            <li class="box track__item">
+            <li class="box track__item" data-track="${APP.routeMP3}${mp3}">
                 <div class="track__thumb">
                         <img class="song__img" src="${APP.routeImg}${image_small}" alt="${titleArtist}" />
                 </div>
@@ -99,7 +99,7 @@ const APP = {
                     let trackid = srcTrackInfo.getAttribute('data-id');
 
                     // Manage the audio and change the icon Play/Pause
-                    let srcAudio = song.querySelector('audio').innerHTML;
+                    let srcAudio = song.getAttribute('data-track');
                     let newAudio = new Audio(srcAudio);
 
                     if(APP.currentAudio.src === newAudio.src)
@@ -171,7 +171,7 @@ const APP = {
                 if(APP.flagFirstAudio==0)
                 {
                     try {
-                        let srcAudio = song.querySelector('audio').innerHTML;
+                        let srcAudio = song.getAttribute('data-track');
                         let newAudio = new Audio(srcAudio);
                         APP.currentAudio = newAudio;
                         
@@ -352,7 +352,7 @@ const APP = {
         let trackid = srcTrackInfo.getAttribute('data-id');
 
         // Manage the audio and change the icon Play/Pause
-        let srcAudio = APP.songList[index].querySelector('audio').innerHTML;
+        let srcAudio = APP.songList[index].getAttribute('data-track');
         let newAudio = new Audio(srcAudio);
 
         if(APP.currentAudio.src === newAudio.src)
