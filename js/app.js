@@ -88,129 +88,27 @@ const APP = {
         {
             song.addEventListener('click',()=>{
 
-                try {
-                    // Change main cover
-                    let srcCover = song.querySelector('.song__img').src;
-                    let srcCoverBig = srcCover.replace("02","01");
-                    document.querySelector('.song__img_main').src = srcCoverBig;
+                // Change main cover
+                let srcCover = song.querySelector('.song__img').src;
+                let srcCoverBig = srcCover.replace("02","01");
+                document.querySelector('.song__img_main').src = srcCoverBig;
 
-                    // Store track ID
-                    let srcTrackInfo = song.querySelector('.track__info');
-                    let trackid = srcTrackInfo.getAttribute('data-id');
+                // Store track ID
+                let srcTrackInfo = song.querySelector('.track__info');
+                let trackid = srcTrackInfo.getAttribute('data-id');
 
-                    // Manage the audio and change the icon Play/Pause
-                    let srcAudio = song.getAttribute('data-track');
-                    let newAudio = new Audio(srcAudio);
+                APP.playSong(trackid-1);
 
-                    if(APP.currentAudio.src === newAudio.src)
-                    {            
-                        if(APP.currentAudio.paused){
-                            APP.currentAudio.play();
-                            APP.playState = 1;
-
-                            // Save the current track ID
-                            APP.currentTrack = trackid;
-                        }
-                        else{
-                            APP.currentAudio.pause();
-                            APP.playState = 0;
-                        }
-                    }
-                    else
-                    {
-                        APP.currentAudio.pause();
-                        newAudio.play();
-                        APP.currentAudio = newAudio;
-                        APP.playState = 1;
-
-                        // Save the current track ID
-                        APP.currentTrack = trackid;
-                    }
-
-                    // Buttons Play and Pause - Show or Hide depending the flag
-                        if(APP.playState == 1)
-                        {
-                            APP.iconPlay.style.display = 'none';
-                            APP.iconPause.style.display = '';
-                        }
-                        else 
-                        {
-                            APP.iconPlay.style.display = '';
-                            APP.iconPause.style.display = 'none';
-                        }
-
-                    // Update Time info: Current time of the track, total duration in mins and segs
-
-                    let sTotalMinsText = song.querySelector('.total__mins');
-                    let mTotalMinsText = document.querySelector('.total-time');
-                    let mCurrentMinsText = document.querySelector('.current-time');
-                    let rangePlayed = document.getElementById('rangeValue');
-
-                    newAudio.addEventListener('timeupdate', () => {
-                        let durationPercent = newAudio.currentTime * (100 / newAudio.duration);
-                        durationPercent = Math.round(durationPercent * 100) / 100;
-                        rangePlayed.innerHTML = durationPercent + " %";
-
-                        sTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-                        mTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-                        mCurrentMinsText.innerHTML = APP.convertTimeDisplay(newAudio.currentTime);
-
-                    });
-
-                    // Update the slider
-                    clearInterval(APP.updateTimer);
-                    APP.updateTimer = setInterval(APP.updateSlider, 1000);
-
-                } 
-                catch(err) {
-                    console.warn("Error: ", err)
-                }
             });
             
             // Set the first song as default
                 if(APP.flagFirstAudio==0)
                 {
-                    try {
                         let srcAudio = song.getAttribute('data-track');
                         let newAudio = new Audio(srcAudio);
                         APP.currentAudio = newAudio;
                         
-                        APP.flagFirstAudio = 1;
-
-                        let srcCover = song.querySelector('.song__img').src;
-                        let srcCoverBig = srcCover.replace("02","01");
-                        document.querySelector('.song__img_main').src = srcCoverBig;
-
-                        // Update Time info: Current time of the track, total duration in mins and segs
-
-                        let sTotalMinsText = song.querySelector('.total__mins');
-                        let mTotalMinsText = document.querySelector('.total-time');
-                        let mCurrentMinsText = document.querySelector('.current-time');
-                        let rangePlayed = document.getElementById('rangeValue');
-
-                        newAudio.addEventListener('timeupdate', () => {
-                            let durationPercent = newAudio.currentTime * (100 / newAudio.duration);
-                            durationPercent = Math.round(durationPercent * 100) / 100;
-                            rangePlayed.innerHTML = durationPercent + " %";
-
-                            sTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-                            mTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-                            mCurrentMinsText.innerHTML = APP.convertTimeDisplay(newAudio.currentTime);
-
-                        });
-
-                        // Update the slider
-                        clearInterval(APP.updateTimer);
-                        APP.updateTimer = setInterval(APP.updateSlider, 1000);
-
-                        // Save the current track ID
-                            let srcTrackInfo = song.querySelector('.track__info');
-                            let trackid = srcTrackInfo.getAttribute('data-id');
-                            APP.currentTrack = trackid;
-                    } 
-                    catch(err) {
-                        console.warn("Error: ", err)
-                    }
+                        APP.playSong(0);
                 }
             // Error
                 song.addEventListener('error',(ev)=>{
@@ -222,6 +120,7 @@ const APP = {
 
     // Set the listener to Play the current song
     APP.iconPlay.addEventListener('click',() => {
+
         if(APP.currentAudio.src !='')
         {
             if(APP.currentAudio.paused){
@@ -248,6 +147,7 @@ const APP = {
 
     // Set the listener to Pause the current song
     APP.iconPause.addEventListener('click',() => {
+
         if(APP.currentAudio.src!='')
         {
             if(APP.currentAudio.paused){
@@ -358,7 +258,16 @@ const APP = {
         if(APP.currentAudio.src === newAudio.src)
         {            
             if(APP.currentAudio.paused){
-                APP.currentAudio.play();
+
+                if(APP.flagFirstAudio!=0)
+                {
+                    APP.currentAudio.play();
+                }
+                else
+                {
+                    APP.currentAudio.pause();
+                }
+                
                 APP.playState = 1;
 
                 // Save the current track ID
@@ -381,6 +290,8 @@ const APP = {
         }
 
         // Buttons Play and Pause - Show or Hide depending the flag
+        if(APP.flagFirstAudio!=0)
+        {
             if(APP.playState == 1)
             {
                 APP.iconPlay.style.display = 'none';
@@ -391,22 +302,26 @@ const APP = {
                 APP.iconPlay.style.display = '';
                 APP.iconPause.style.display = 'none';
             }
-
+        }
+        else{
+            APP.flagFirstAudio = 1;
+        }
         // Update Time info: Current time of the track, total duration in mins and segs
 
         let sTotalMinsText = APP.songList[index].querySelector('.total__mins');
+
         let mTotalMinsText = document.querySelector('.total-time');
         let mCurrentMinsText = document.querySelector('.current-time');
         let rangePlayed = document.getElementById('rangeValue');
 
-        newAudio.addEventListener('timeupdate', () => {
-            let durationPercent = newAudio.currentTime * (100 / newAudio.duration);
+        APP.currentAudio.addEventListener('timeupdate', () => {
+            let durationPercent = APP.currentAudio.currentTime * (100 / APP.currentAudio.duration);
             durationPercent = Math.round(durationPercent * 100) / 100;
             rangePlayed.innerHTML = durationPercent + " %";
 
-            sTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-            mTotalMinsText.innerHTML = APP.convertTimeDisplay(newAudio.duration);
-            mCurrentMinsText.innerHTML = APP.convertTimeDisplay(newAudio.currentTime);
+            sTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration);
+            mTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration);
+            mCurrentMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.currentTime);
 
         });
 
