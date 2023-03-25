@@ -13,12 +13,17 @@ const APP = {
   playState: 0,
   iconPlay: '',
   iconPause: '',
+  iconSufle: '',
   iconBack: '',
   iconNext: '',
   slider: '',
-  flagFirstAudio: 0,
+  arrayTemp: [],
+  flagFirstAudio: 0,  
   init: () => {
     // --- Called when DOMContentLoaded is triggered:::
+
+    // Init the main array (default sort)
+    APP.initFirstList();
 
     // Init Playlist
     APP.initPlaylist();
@@ -30,23 +35,39 @@ const APP = {
     APP.iconPause = document.getElementById('btnPause');
     APP.iconPause.style.display = 'none';
 
-
     APP.iconBack = document.getElementById('btnPrev');
     APP.iconNext = document.getElementById('btnNext');
-    
+    APP.iconSufle = document.getElementById('btnShuffle');
+
     // Slider
     APP.slider = document.getElementById('slider');
 
-    // Init listeners
-    APP.addListeners();
+    APP.addTrackListener();
+    // Init Button listeners
+    APP.addButtonListeners();
   },
-
-  initPlaylist(){
+  async initFirstList(){
+    let countTracks = 0;
+    await MEDIA.map((obj) => {
+        APP.arrayTemp[countTracks] = Object.entries(obj);
+        countTracks++;
+    });
+  },
+  async initPlaylist(){
+    
+    APP.songIDs = [];
+    APP.songList = [];
+    
     let playerContainer = document.getElementById('playlist');
 
-    MEDIA.map( (obj) => {
-        
-        let {id, title, artist, mp3, image_small} = obj;
+    for(let i=0; i<APP.arrayTemp.length; i++)
+    {
+        let id          = i+1; // APP.arrayTemp[i][0][1];   // i-1;
+        let image_big   = APP.arrayTemp[i][1][1];
+        let image_small = APP.arrayTemp[i][2][1];
+        let mp3         = APP.arrayTemp[i][3][1];
+        let title       = APP.arrayTemp[i][4][1];
+        let artist      = APP.arrayTemp[i][5][1];
 
         let titleArtist = title + ' - ' + artist;
 
@@ -77,13 +98,48 @@ const APP = {
 
         // Store track ID
         APP.songIDs.push(id);
-    });
+    }
+
+    // let playlistIni = MEDIA.map((obj) => {
+
+    //     let { id, title, artist, mp3, image_small } = obj;
+
+    //     let titleArtist = title + ' - ' + artist;
+
+    //     let contentAudio = `
+    //         <li class="box track__item" data-track="${APP.routeMP3}${mp3}">
+    //             <div class="track__thumb">
+    //                     <img class="song__img" src="${APP.routeImg}${image_small}" alt="${titleArtist}" />
+    //             </div>
+    //             <div class="track__info" data-id=${id}>
+    //                 <div class="track__details">
+    //                     <p class="track__title">${title}</p>
+    //                     <p class="track__artist">${artist}</p>
+    //                 </div>
+    //                 <div class="track__time">
+    //                     <time class="total__mins"></time>
+    //                 </div>
+    //                 <div class="track__mp3">
+    //                     <audio>${APP.routeMP3}${mp3}</audio>
+    //                 </div>
+    //             </div> 
+    //         </li>
+    //     `;
+
+    //     let audioItem = document.createElement('li');
+    //     audioItem.innerHTML = contentAudio;
+
+    //     playerContainer.appendChild(audioItem);
+
+    //     // Store track ID
+    //     APP.songIDs.push(id);
+    // });
   },
-
-  addListeners: () => {
-
+  addTrackListener() {
+    // APP.songList = document.querySelectorAll('.track__item');
     APP.songList = document.querySelectorAll('.track__item');
     APP.songList.forEach( (song) => {
+
         if(song.src!='')
         {
             song.addEventListener('click',()=>{
@@ -117,6 +173,8 @@ const APP = {
         }
         
     });
+  },
+  addButtonListeners: () => {
 
     // Set the listener to Play the current song
     APP.iconPlay.addEventListener('click',() => {
@@ -147,31 +205,7 @@ const APP = {
 
     // Set the listener to Pause the current song
     APP.iconPause.addEventListener('click',() => {
-
-        if(APP.currentAudio.src!='')
-        {
-            if(APP.currentAudio.paused){
-                APP.currentAudio.play();
-                APP.playState = 1;
-
-            }
-            else{
-                APP.currentAudio.pause();
-                APP.playState = 0;
-            }
-
-            // Buttons Play and Pause - Show or Hide depending the flag
-            if(APP.playState == 1)
-            {
-                APP.iconPlay.style.display = 'none';
-                APP.iconPause.style.display = '';
-            }
-            else 
-            {
-                APP.iconPlay.style.display = '';
-                APP.iconPause.style.display = 'none';
-            }
-        }
+        APP.pauseSong();
     });
 
     // Set listener to play the next song
@@ -214,12 +248,61 @@ const APP = {
         }
     })
 
+    APP.iconSufle.addEventListener('click', () => {
+        APP.shufflePlaylist();
+    })
+
     // Set the listeener for the Slider
     APP.slider.addEventListener('change', () => {
         let trackPosition = APP.currentAudio.duration * (APP.slider.value / 100);
         APP.currentAudio.currentTime = trackPosition;
     });
 
+  },
+  pauseSong(){
+    if(APP.currentAudio.src!='')
+    {
+        if(APP.currentAudio.paused){
+            APP.currentAudio.play();
+            APP.playState = 1;
+        }
+        else{
+            APP.currentAudio.pause();
+            APP.playState = 0;
+        }
+
+        // Buttons Play and Pause - Show or Hide depending the flag
+        if(APP.playState == 1)
+        {
+            APP.iconPlay.style.display = 'none';
+            APP.iconPause.style.display = '';
+        }
+        else 
+        {
+            APP.iconPlay.style.display = '';
+            APP.iconPause.style.display = 'none';
+        }
+    }
+  },
+  shuffleArray (array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+  },
+  shufflePlaylist: () => {
+    
+    let playerContainer = document.getElementById('playlist');
+    playerContainer.innerHTML = "";
+
+    APP.arrayTemp = APP.shuffleArray(APP.arrayTemp);
+
+    APP.initPlaylist();
+
+    APP.addTrackListener();
+
+    APP.pauseSong();
   },
   updateSlider: () => {
     let trackPosition = APP.currentAudio.currentTime * (100 / APP.currentAudio.duration);
@@ -332,9 +415,6 @@ const APP = {
     catch(err) {
         console.warn("Error: ", err)
     }
-  },
-  pause: () => {
-    //pause the track loaded into APP.audio playing
   },
   convertTimeDisplay: (seconds) => {
     //convert the seconds parameter to `00:00` style display
