@@ -600,3 +600,48 @@
         100% { background-color: #0192c3; }
       }
       
+      /* Main image animation */
+
+      @keyframes beat {
+        0% {
+          transform: rotate(-5deg) scale(1);
+        }
+        10% {
+          transform: rotate(-5deg) scale(1.1);
+        }
+        20% {
+          transform: rotate(-5deg) scale(1);
+        }
+        30% {
+          transform: rotate(5deg) scale(1.1);
+        }
+        40% {
+          transform: rotate(-5deg) scale(1);
+        }
+        50% {
+          transform: rotate(5deg) scale(1.1);
+        }
+        60% {
+          transform: rotate(-5deg) scale(1);
+        }
+        70% {
+          transform: rotate(5deg) scale(1.1);
+        }
+        80% {
+          transform: rotate(-5deg) scale(1);
+        }
+        90% {
+          transform: rotate(5deg) scale(1.1);
+        }
+        100% {
+          transform: rotate(-5deg) scale(1);
+        }
+      }
+
+      .imagebeat {
+        animation-name: beat;
+        animation-duration: 5s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+      

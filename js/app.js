@@ -34,7 +34,7 @@ const APP = {
 
     // Slider
     APP.slider = document.getElementById('slider');
-    
+
     // Init the main array (default sort) and ini the main playlist
     APP.initFirstList();
   },
@@ -237,7 +237,35 @@ const APP = {
 
     APP.addTrackListener();
 
-    APP.pauseSong();
+    APP.setMainImage();
+
+    // EXECUTE RESETS AFTER SHUFFLE
+    try {
+
+        // Reset slider
+        APP.slider.value = 0;
+
+        APP.currentAudio.pause();
+        APP.playState = 0;
+        APP.iconPlay.style.display = '';
+        APP.iconPause.style.display = 'none';
+        APP.currentTrack = 0;
+
+        // Manage the audio and change the icon Play/Pause
+        let srcAudio = APP.songList[0].getAttribute('data-track');
+        let newAudio = new Audio(srcAudio);
+        APP.currentAudio = newAudio;
+        APP.playSong(0);
+
+    } catch (error) {
+        console.warn("Error: ", err)
+    }
+  },
+  setMainImage() {
+    // Change main cover
+    let image_small = APP.routeImg + '' + APP.arrayTemp[0][2][1];
+    let srcCoverBig = image_small.replace("02","01");
+    document.querySelector('.song__img_main').src = srcCoverBig;
   },
   updateSlider: () => {
     let trackPosition = APP.currentAudio.currentTime * (100 / APP.currentAudio.duration);
@@ -399,8 +427,7 @@ const APP = {
             durationPercent = Math.round(durationPercent * 100) / 100;
             rangePlayed.innerHTML = durationPercent + " %";
 
-            // sTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration) + "<<";
-            mTotalMinsText.innerHTML = sTotalMinsText.innerHTML; //APP.convertTimeDisplay(APP.currentAudio.duration) + "<<<";
+            mTotalMinsText.innerHTML = sTotalMinsText.innerHTML;
             mCurrentMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.currentTime);
         });
 
@@ -415,10 +442,22 @@ const APP = {
   playAnimation(){
     const albumArt = document.querySelector('.album_art__full');
     albumArt.classList.add('bganimation');
+
+    const mainImage = document.querySelector('.song__img_main');
+    mainImage.classList.add('imagebeat');
+
+    const headerTitle = document.querySelector('.logo__text');
+    headerTitle.classList.add('imagebeat');
   },
   stopAnimation(){
     const albumArt = document.querySelector('.album_art__full');
     albumArt.classList.remove('bganimation');
+
+    const mainImage = document.querySelector('.song__img_main');
+    mainImage.classList.remove('imagebeat');
+
+    const headerTitle = document.querySelector('.logo__text');
+    headerTitle.classList.remove('imagebeat');
   },
   convertTimeDisplay: (seconds) => {
     //convert the seconds parameter to `00:00` style display
