@@ -45,6 +45,8 @@ const APP = {
     APP.addTrackListener();
     // Init Button listeners
     APP.addButtonListeners();
+
+    APP.stopAnimation();
   },
   async initFirstList(){
     let countTracks = 0;
@@ -179,6 +181,9 @@ const APP = {
     // Set the listener to Play the current song
     APP.iconPlay.addEventListener('click',() => {
 
+        // Main background color
+        APP.playAnimation();
+        
         if(APP.currentAudio.src !='')
         {
             if(APP.currentAudio.paused){
@@ -260,6 +265,9 @@ const APP = {
 
   },
   pauseSong(){
+    
+    APP.stopAnimation();
+
     if(APP.currentAudio.src!='')
     {
         if(APP.currentAudio.paused){
@@ -325,6 +333,9 @@ const APP = {
         // Reset slider
         APP.slider.value = 0;
 
+        // Main background color
+        APP.playAnimation();
+
         // Change main cover
         let srcCover = APP.songList[index].querySelector('.song__img').src;
         let srcCoverBig = srcCover.replace("02","01");
@@ -337,6 +348,7 @@ const APP = {
         // Manage the audio and change the icon Play/Pause
         let srcAudio = APP.songList[index].getAttribute('data-track');
         let newAudio = new Audio(srcAudio);
+        
 
         if(APP.currentAudio.src === newAudio.src)
         {            
@@ -415,6 +427,14 @@ const APP = {
     catch(err) {
         console.warn("Error: ", err)
     }
+  },
+  playAnimation(){
+    const albumArt = document.querySelector('.album_art__full');
+    albumArt.classList.add('bganimation');
+  },
+  stopAnimation(){
+    const albumArt = document.querySelector('.album_art__full');
+    albumArt.classList.remove('bganimation');
   },
   convertTimeDisplay: (seconds) => {
     //convert the seconds parameter to `00:00` style display
