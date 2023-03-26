@@ -20,13 +20,6 @@ const APP = {
   arrayTemp: [],
   flagFirstAudio: 0,  
   init: () => {
-    // --- Called when DOMContentLoaded is triggered:::
-
-    // Init the main array (default sort)
-    APP.initFirstList();
-
-    // Init Playlist
-    APP.initPlaylist();
 
     // Init iconPlay variable
     APP.iconPlay = document.getElementById('btnPlay');
@@ -41,21 +34,47 @@ const APP = {
 
     // Slider
     APP.slider = document.getElementById('slider');
+    
+    // Init the main array (default sort) and ini the main playlist
+    APP.initFirstList();
+  },
+  async initFirstList(){
+    let countTracks = 0;
+    let promises = [];
+
+    MEDIA.forEach((obj) => {
+
+        let newAudioTmp = new Audio(`${this.routeMP3}${obj.mp3}`);
+
+        promises.push(new Promise((resolve, reject) => {
+
+            newAudioTmp.addEventListener("loadedmetadata", () => {
+
+                let totalMinsText = APP.convertTimeDisplay(newAudioTmp.duration);
+                obj['duration'] = totalMinsText;
+
+                APP.arrayTemp[countTracks] = Object.entries(obj);
+                countTracks++;
+                resolve();
+            });
+        }));
+    });
+
+    await Promise.all(promises);
+
+    // AFTER THE PROMISES LOAD MAIN SONGS LIST
+    
+    // Init Playlist
+    APP.initPlaylist();
 
     APP.addTrackListener();
+
     // Init Button listeners
     APP.addButtonListeners();
 
     APP.stopAnimation();
   },
-  async initFirstList(){
-    let countTracks = 0;
-    await MEDIA.map((obj) => {
-        APP.arrayTemp[countTracks] = Object.entries(obj);
-        countTracks++;
-    });
-  },
-  async initPlaylist(){
+  initPlaylist(){
     
     APP.songIDs = [];
     APP.songList = [];
@@ -64,12 +83,13 @@ const APP = {
 
     for(let i=0; i<APP.arrayTemp.length; i++)
     {
-        let id          = i+1; // APP.arrayTemp[i][0][1];   // i-1;
+        let id          = i+1;
         let image_big   = APP.arrayTemp[i][1][1];
         let image_small = APP.arrayTemp[i][2][1];
         let mp3         = APP.arrayTemp[i][3][1];
         let title       = APP.arrayTemp[i][4][1];
         let artist      = APP.arrayTemp[i][5][1];
+        let duration    = APP.arrayTemp[i][6][1];
 
         let titleArtist = title + ' - ' + artist;
 
@@ -84,7 +104,7 @@ const APP = {
                         <p class="track__artist">${artist}</p>
                     </div>
                     <div class="track__time">
-                        <time class="total__mins"></time>
+                        <time class="total__mins">${duration}</time>
                     </div>
                     <div class="track__mp3">
                         <audio>${APP.routeMP3}${mp3}</audio>
@@ -101,41 +121,6 @@ const APP = {
         // Store track ID
         APP.songIDs.push(id);
     }
-
-    // let playlistIni = MEDIA.map((obj) => {
-
-    //     let { id, title, artist, mp3, image_small } = obj;
-
-    //     let titleArtist = title + ' - ' + artist;
-
-    //     let contentAudio = `
-    //         <li class="box track__item" data-track="${APP.routeMP3}${mp3}">
-    //             <div class="track__thumb">
-    //                     <img class="song__img" src="${APP.routeImg}${image_small}" alt="${titleArtist}" />
-    //             </div>
-    //             <div class="track__info" data-id=${id}>
-    //                 <div class="track__details">
-    //                     <p class="track__title">${title}</p>
-    //                     <p class="track__artist">${artist}</p>
-    //                 </div>
-    //                 <div class="track__time">
-    //                     <time class="total__mins"></time>
-    //                 </div>
-    //                 <div class="track__mp3">
-    //                     <audio>${APP.routeMP3}${mp3}</audio>
-    //                 </div>
-    //             </div> 
-    //         </li>
-    //     `;
-
-    //     let audioItem = document.createElement('li');
-    //     audioItem.innerHTML = contentAudio;
-
-    //     playerContainer.appendChild(audioItem);
-
-    //     // Store track ID
-    //     APP.songIDs.push(id);
-    // });
   },
   addTrackListener() {
     // APP.songList = document.querySelectorAll('.track__item');
@@ -215,42 +200,12 @@ const APP = {
 
     // Set listener to play the next song
     APP.iconNext.addEventListener('click', () => {
-
-        let currentIndex = APP.songIDs.indexOf(parseInt(APP.currentTrack));
-
-        let newIndex = parseInt(currentIndex) + 1;
-
-        // GET NEXT AUDIO
-
-        if(newIndex<APP.songIDs.length)
-        {
-            APP.playSong(newIndex);
-        }
-        else
-        {
-            APP.currentTrack = 0;
-            APP.playSong(APP.currentTrack);
-        }
+        APP.nextSong();
     });
 
     // Set listener to play the previous song
     APP.iconBack.addEventListener('click', () => {
-
-        let currentIndex = APP.songIDs.indexOf(parseInt(APP.currentTrack));
-
-        let newIndex = parseInt(currentIndex) - 1;
-
-        // GET PREVIOUS AUDIO
-
-        if(newIndex<0)
-        {
-            APP.currentTrack = APP.songIDs.length - 1;
-            APP.playSong(APP.currentTrack);
-        }
-        else
-        {
-            APP.playSong(newIndex);
-        }
+        APP.previousSong();
     })
 
     APP.iconSufle.addEventListener('click', () => {
@@ -263,34 +218,6 @@ const APP = {
         APP.currentAudio.currentTime = trackPosition;
     });
 
-  },
-  pauseSong(){
-    
-    APP.stopAnimation();
-
-    if(APP.currentAudio.src!='')
-    {
-        if(APP.currentAudio.paused){
-            APP.currentAudio.play();
-            APP.playState = 1;
-        }
-        else{
-            APP.currentAudio.pause();
-            APP.playState = 0;
-        }
-
-        // Buttons Play and Pause - Show or Hide depending the flag
-        if(APP.playState == 1)
-        {
-            APP.iconPlay.style.display = 'none';
-            APP.iconPause.style.display = '';
-        }
-        else 
-        {
-            APP.iconPlay.style.display = '';
-            APP.iconPause.style.display = 'none';
-        }
-    }
   },
   shuffleArray (array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -315,16 +242,74 @@ const APP = {
   updateSlider: () => {
     let trackPosition = APP.currentAudio.currentTime * (100 / APP.currentAudio.duration);
     APP.slider.value = trackPosition;
+
+    if(trackPosition==100)
+    {
+        APP.nextSong();
+    }
   },
   updateImage: (srcImage) => {
     let srcCoverBig = srcImage.replace("02","01");
     document.querySelector('.song__img_main').src = srcCoverBig;
   },
-  buildPlaylist: () => {
-    //read the contents of MEDIA and create the playlist
+  previousSong() {
+    let currentIndex = APP.songIDs.indexOf(parseInt(APP.currentTrack));
+
+    let newIndex = parseInt(currentIndex) - 1;
+
+    // GET PREVIOUS AUDIO
+    if(newIndex<0)
+    {
+        APP.currentTrack = APP.songIDs.length - 1;
+        APP.playSong(APP.currentTrack);
+    }
+    else
+    {
+        APP.playSong(newIndex);
+    }
   },
-  loadCurrentTrack: () => {
-    //use the currentTrack value to set the src of the APP.audio element
+  nextSong() {
+    let currentIndex = APP.songIDs.indexOf(parseInt(APP.currentTrack));
+
+    let newIndex = parseInt(currentIndex) + 1;
+
+    // GET NEXT AUDIO
+
+    if(newIndex<APP.songIDs.length)
+    {
+        APP.playSong(newIndex);
+    }
+    else
+    {
+        APP.currentTrack = 0;
+        APP.playSong(APP.currentTrack);
+    }
+  },
+  pauseSong(){
+    APP.stopAnimation();
+    if(APP.currentAudio.src!='')
+    {
+        if(APP.currentAudio.paused){
+            APP.currentAudio.play();
+            APP.playState = 1;
+        }
+        else{
+            APP.currentAudio.pause();
+            APP.playState = 0;
+        }
+
+        // Buttons Play and Pause - Show or Hide depending the flag
+        if(APP.playState == 1)
+        {
+            APP.iconPlay.style.display = 'none';
+            APP.iconPause.style.display = '';
+        }
+        else 
+        {
+            APP.iconPlay.style.display = '';
+            APP.iconPause.style.display = 'none';
+        }
+    }
   },
   playSong: (index) => {
     //start the track loaded into APP.audio playing
@@ -414,10 +399,9 @@ const APP = {
             durationPercent = Math.round(durationPercent * 100) / 100;
             rangePlayed.innerHTML = durationPercent + " %";
 
-            sTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration);
-            mTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration);
+            // sTotalMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.duration) + "<<";
+            mTotalMinsText.innerHTML = sTotalMinsText.innerHTML; //APP.convertTimeDisplay(APP.currentAudio.duration) + "<<<";
             mCurrentMinsText.innerHTML = APP.convertTimeDisplay(APP.currentAudio.currentTime);
-
         });
 
         // Update the slider
