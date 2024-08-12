@@ -10,4 +10,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ---
 
-This project was developed as part of my studies in Java Script. It is intended for educational purposes and to demonstrate my skills in iOS application development. While every effort has been made to ensure the accuracy and quality of the software, it is provided "as is" without any warranty or guarantee of any kind.
+This project was developed as part of my studies in JavaScript. It is intended for educational purposes and to demonstrate my skills in iOS application development. While every effort has been made to ensure the accuracy and quality of the software, it is provided "as is" without any warranty or guarantee of any kind.
