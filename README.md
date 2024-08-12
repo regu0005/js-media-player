@@ -18,7 +18,9 @@ The **Media Player** is a comprehensive web application developed using HTML, CS
 
 ## Deployment
 
-The **Media Player Web App** is hosted on GitHub Pages, ensuring that the latest version of the app is always accessible to users without the need for manual updates. You can access the app directly via the provided GitHub Pages link.
+The **Media Player Web App** is hosted on GitHub Pages, ensuring that the latest version of the app is always accessible to users without the need for manual updates. You can access the app directly via the provided GitHub Pages link:
+
+[https://regu0005.github.io/js-media-player](https://regu0005.github.io/js-media-player)
 
 ## Getting Started
 
@@ -33,15 +35,6 @@ The **Media Player Web App** is hosted on GitHub Pages, ensuring that the latest
     cd js-media-player
     ```
 3. Open `index.html` in your browser to view the app locally.
-
-### Deployment on GitHub Pages
-
-1. Commit your changes to the `main` branch.
-2. Push to GitHub:
-    ```bash
-    git push origin main
-    ```
-3. Ensure GitHub Pages is enabled in the repository settings under the `Pages` section.
 
 ## Contributing
 
